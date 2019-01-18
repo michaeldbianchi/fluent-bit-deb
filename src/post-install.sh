@@ -1,20 +1,25 @@
 #!/bin/bash
 
-# Pre-Install script for Fluent-Bit on Ubuntu 14.04
+# Post-Install script for Fluent-Bit on Ubuntu 14.04
 
 SERVICE="fluent-bit"
 file_default="/etc/default/$SERVICE"
 file_init="/etc/init/$SERVICE.conf"
+file_conf="/etc/fluent-bit/$SERVICE.conf"
 
 if [ -e $file_default ]; then newhash_file_default=$(md5sum < $file_default); fi
 if [ -e $file_default.postinst ]; then oldhash_file_default=$(md5sum < $file_default.postinst); fi
+
 if [ -e $file_init ]; then newhash_file_init=$(md5sum < $file_init); fi
 if [ -e $file_init.postinst ]; then oldhash_file_init=$(md5sum < $file_init.postinst); fi
+
+if [ -e $file_conf ]; then newhash_file_confg=$(md5sum < $file_conf); fi
+if [ -e $file_conf.postinst ]; then oldhash_file_conf=$(md5sum < $file_conf.postinst); fi
 
 # Check if one of the files changed. If so, restart; if not, reload
 if [ -e $file_default.postinst ] && [ -e $file_init.postinst ]
 then
-	if [ "$newhash_file_default" != "$oldhash_file_default" ] || [ "$newhash_file_init" != "$oldhash_file_init" ]
+	if [ "$newhash_file_default" != "$oldhash_file_default" ] || [ "$newhash_file_init" != "$oldhash_file_init" ] || [ "$newhash_file_conf" != "$oldhash_file_conf" ]
 	then
 		echo "Init or default file changed, restarting"
 		service $SERVICE stop || true
@@ -30,7 +35,7 @@ else
 fi
 
 # Delete the files if they exists
-rm $file_default.postinst $file_init.postinst 2> /dev/null || true
+rm $file_default.postinst $file_init.postinst $file_conf.postinst 2> /dev/null || true
 
 # Copy logrotate script
 cat > /etc/logrotate.d/fluent-bit << EOF

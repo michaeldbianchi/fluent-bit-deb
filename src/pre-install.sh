@@ -5,6 +5,7 @@
 SERVICE="fluent-bit"
 file_default="/etc/default/$SERVICE"
 file_init="/etc/init/$SERVICE.conf"
+file_conf="/etc/fluent-bit/$SERVICE.conf"
 
 # Create user and group if non-existant
 if ! getent passwd $SERVICE > /dev/null
@@ -27,3 +28,10 @@ if [ -e $file_init ]
 then
 	cp $file_init $file_init.postinst
 fi
+
+if [ -e $file_conf ]
+then
+	cp $file_conf $file_conf.postinst
+fi
+
+mkdir -p /var/log/fluent-bit
