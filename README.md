@@ -1,37 +1,24 @@
 # How to build and upload the debian package to our internal repository
 
-## Prerequisites:
-### Install [fpm](https://github.com/jordansissel/fpm)
+### Building Dev Environment
 ```
-brew install gnu-tar
-gem install --no-ri --no-rdoc fpm
-
+docker build --no-cache -t fluent-bit-trusty:v1 .
+docker run -it -v ~/Source/auth0/fluent-bit-deb:/debian fluent-bit-trusty:v1 /bin/bash
 ```
 
-### Install [deb-s3](https://github.com/krobertson/deb-s3)
-```
-gem install deb-s3
-```
+### Building Fluet-Bit From Source
+Run the following commands inside the docker container
 
-### Import gpg key
 ```
-gpg --recv-keys A9DE0468DA53FD14D37A347A9CA4D1BEF63E3D3A --keyserver keyserver.ubuntu.com
+make download_package
+cd fluent-bit/build
+cmake ..
+make
 ```
 
 ## Build:
 ```
-make build VERSION_NUMBER=3.3.11
+make build VERSION_NUMBER=1.0.1
 ```
 
-
-## Upload:
-
-### Upload to public apt repository
-```
-deb-s3 upload --lock --sign F63E3D3A --visibility public --preserve-versions --s3-region us-west-1 --cache-control=no-cache --bucket debs.auth0.com etcd_VERSION_.deb
-```
-
-### Upload to private apt repository
-```
-deb-s3 upload --lock --sign F63E3D3A --visibility private --preserve-versions --s3-region us-west-1 --cache-control=no-cache --bucket apt.auth0.com etcd_VERSION_.deb
-```
+This will output a deb package that can be used to install the files.
