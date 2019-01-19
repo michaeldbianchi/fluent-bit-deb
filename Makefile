@@ -11,8 +11,7 @@ build_deb: check-fpm-installed check-version-variable
 	--before-install src/pre-install.sh --after-install src/post-install.sh \
 	--before-remove src/pre-remove.sh --after-remove src/post-remove.sh \
 	--prefix /opt --deb-upstart src/fluent-bit.conf --deb-default src/fluent-bit \
-	--config-files etc/fluent-bit/fluent-bit.conf \
-	--config-files etc/fluent-bit/parsers.conf \
+	--config-files etc/fluent-bit/ \
 	--url 'https://github.com/fluent/fluent-bit' --version $(VERSION_NUMBER) -n fluent-bit \
 	-x '**/.git*' \
 	--description 'fluent-bit build $(VERSION_NUMBER) packaged by Auth0' \
@@ -20,6 +19,7 @@ build_deb: check-fpm-installed check-version-variable
 	--maintainer 'Auth0 PSaaS Team' \
 	--license 'Apache 2.0' \
 	--vendor 'treasure-data' \
+	-f \
 	-t deb -s dir fluent-bit
 
 check-version-variable:

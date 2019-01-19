@@ -35,3 +35,7 @@ then
 fi
 
 mkdir -p /var/log/fluent-bit
+chown -R $SERVICE:$SERVICE /var/log/fluent-bit
+
+mkdir -p  /var/lib/fluent-bit/storage
+chown -R $SERVICE:$SERVICE /var/lib/fluent-bit/storage
