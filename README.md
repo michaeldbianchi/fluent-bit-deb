@@ -6,7 +6,7 @@ docker build --no-cache -t fluent-bit-trusty:v1 .
 docker run -it -v ~/Source/auth0/fluent-bit-deb:/debian fluent-bit-trusty:v1 /bin/bash
 ```
 
-### Building Fluet-Bit From Source
+### Building Fluent-Bit From Source
 Run the following commands inside the docker container
 
 ```
