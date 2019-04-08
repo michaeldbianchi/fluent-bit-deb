@@ -20,7 +20,7 @@ build_deb: check-fpm-installed check-version-variable
 	--license 'Apache 2.0' \
 	--vendor 'treasure-data' \
 	-f \
-	-t deb -s dir fluent-bit
+	-t deb -s dir fluent-bit/build/bin
 
 check-version-variable:
 ifndef VERSION_NUMBER
